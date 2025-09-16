@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { post } from "../common/api"; // 공통 API 함수 임포트
 
 function RegisterPage() {
@@ -7,6 +8,7 @@ function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,8 +24,7 @@ function RegisterPage() {
       const data = await post("/api/users/signup", requestBody);
       console.log("회원가입 성공:", data);
       alert("회원가입 성공!");
-      // 필요하면 로그인 페이지로 이동
-      // navigate("/login") 사용 가능
+      navigate("/login");
     } catch (error) {
       alert("회원가입 실패: " + error.message);
     }

@@ -50,3 +50,21 @@ export async function get(endpoint) {
     else throw new Error(error.message);
   }
 }
+
+// 토큰 기반 GET 요청
+export async function getWithToken(endpoint, token) {
+  try {
+    const response = await axios.get(`${BASE_URL}${endpoint}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // 토큰 헤더 추가
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("API 요청 오류:", error);
+    if (error.response) throw new Error(error.response.data.message || "API 요청 실패");
+    else if (error.request) throw new Error("서버 응답 없음");
+    else throw new Error(error.message);
+  }
+}

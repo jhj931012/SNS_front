@@ -1,12 +1,33 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { post } from "../common/api";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate(); 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("로그인 정보:", { username, password });
+
+    try {
+      const data = await post("/api/users/login", {
+        username,
+        password,
+      });
+
+      // ✅ 백엔드 응답: { accessToken: "JWT값" }
+      localStorage.setItem("token", data.accessToken);
+
+      alert("로그인 성공! 🎉");
+      console.log("JWT 토큰:", data.accessToken);
+
+      // TODO: 메인 화면 이동
+      navigate("/home");
+    } catch (error) {
+      console.error("로그인 실패:", error.message);
+      alert(error.message || "로그인에 실패했습니다.");
+    }
   };
 
   // 스타일 객체
