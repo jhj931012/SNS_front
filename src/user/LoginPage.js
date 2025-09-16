@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { post } from "../common/api";
 
-function LoginPage() {
+function LoginPage({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); 
@@ -20,7 +20,9 @@ function LoginPage() {
       localStorage.setItem("token", data.accessToken);
 
       alert("로그인 성공! 🎉");
-      console.log("JWT 토큰:", data.accessToken);
+      if (onLogin) {
+        await onLogin();  // App.js의 fetchUserInfo 실행
+      }
 
       // TODO: 메인 화면 이동
       navigate("/home");
